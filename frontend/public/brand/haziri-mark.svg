@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="hzTileBg" x1="12" y1="8" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22272A" />
+      <stop offset="55%" stop-color="#141719" />
+      <stop offset="100%" stop-color="#090A0B" />
+    </linearGradient>
+    <linearGradient id="hzFrameStroke" x1="14" y1="14" x2="106" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B9D0D8" />
+      <stop offset="62%" stop-color="#91AAB4" />
+      <stop offset="100%" stop-color="#CDBF9D" stop-opacity="0.78" />
+    </linearGradient>
+    <linearGradient id="hzScanBeam" x1="26" y1="60" x2="94" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B9D0D8" stop-opacity="0" />
+      <stop offset="22%" stop-color="#B9D0D8" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#F5F6F6" stop-opacity="1" />
+      <stop offset="78%" stop-color="#B9D0D8" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#B9D0D8" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="hzScanGlow" x1="60" y1="48" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B9D0D8" stop-opacity="0" />
+      <stop offset="100%" stop-color="#B9D0D8" stop-opacity="0.22" />
+    </linearGradient>
+    <radialGradient id="hzCoreHalo" cx="50%" cy="48%" r="48%">
+      <stop offset="0%" stop-color="#B9D0D8" stop-opacity="0.18" />
+      <stop offset="65%" stop-color="#91AAB4" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#090A0B" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Architectural Glass Tile -->
+  <rect width="120" height="120" rx="26" fill="url(#hzTileBg)" />
+  <circle cx="60" cy="58" r="46" fill="url(#hzCoreHalo)" />
+  <rect x="4" y="4" width="112" height="112" rx="22" stroke="url(#hzFrameStroke)" stroke-opacity="0.38" stroke-width="1.6" />
+
+  <!-- Biometric Scanner Corner Brackets -->
+  <path d="M23 41V27C23 24.8 24.8 23 27 23H41" stroke="#B9D0D8" stroke-width="3.6" stroke-linecap="round" />
+  <path d="M79 23H93C95.2 23 97 24.8 97 27V41" stroke="#B9D0D8" stroke-width="3.6" stroke-linecap="round" />
+  <path d="M23 79V93C23 95.2 24.8 97 27 97H41" stroke="#91AAB4" stroke-width="3.6" stroke-linecap="round" />
+  <path d="M79 97H93C95.2 97 97 95.2 97 93V79" stroke="#91AAB4" stroke-width="3.6" stroke-linecap="round" />
+
+  <!-- Sculpted Face Contour -->
+  <ellipse cx="60" cy="59" rx="21" ry="25" fill="#141719" fill-opacity="0.48" stroke="url(#hzFrameStroke)" stroke-width="2.4" stroke-dasharray="5 3.5" />
+
+  <!-- Biometric Facial Features -->
+  <path d="M49 48V53.5" stroke="#F5F6F6" stroke-width="3.4" stroke-linecap="round" />
+  <path d="M71 48V53.5" stroke="#F5F6F6" stroke-width="3.4" stroke-linecap="round" />
+  <path d="M60 49V60.5C60 62 59 63 57.5 63" stroke="#B9D0D8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M51 69.5C54 73.2 66 73.2 69 69.5" stroke="#91AAB4" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Optical Scan Beam & Soft Trail -->
+  <rect x="29" y="48" width="62" height="12" rx="4" fill="url(#hzScanGlow)" />
+  <line x1="27" y1="60" x2="93" y2="60" stroke="url(#hzScanBeam)" stroke-width="2.6" stroke-linecap="round" />
+
+  <!-- Selective Pale Gold Verification Lock Dot -->
+  <circle cx="88" cy="32" r="2.6" fill="#CDBF9D" />
+</svg>

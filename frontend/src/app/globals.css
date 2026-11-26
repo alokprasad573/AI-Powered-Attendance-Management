@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-display), "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-absolute-black: var(--bg-absolute-black);
+  --color-charcoal: var(--bg-charcoal);
+  --color-graphite-surface: var(--bg-graphite);
+  --color-platinum: var(--accent-platinum);
+  --color-silver-blue: var(--accent-silver-blue);
+  --color-pale-gold: var(--accent-pale-gold);
+  --color-pure-white: var(--text-pure-white);
+  --color-cool-grey: var(--text-cool-grey);
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Core Architectural Palette */
+  --bg-absolute-black: #090A0B;
+  --bg-charcoal: #141719;
+  --bg-graphite: #22272A;
+  --bg-recessed: #060708;
+
+  /* Accent System */
+  --accent-platinum: #B9D0D8;
+  --accent-silver-blue: #91AAB4;
+  --accent-pale-gold: #CDBF9D;
+
+  /* Typography Ink */
+  --text-pure-white: #F5F6F6;
+  --text-cool-grey: #A0A9AC;
+  --text-muted: #767E82;
+
+  /* Semantic Design Tokens */
+  --bg-primary: var(--bg-absolute-black);
+  --bg-secondary: var(--bg-charcoal);
+  --bg-elevated: var(--bg-graphite);
+  --accent-primary: var(--accent-platinum);
+  --accent-secondary: var(--accent-silver-blue);
+  --accent-highlight: var(--accent-pale-gold);
+  --text-primary: var(--text-pure-white);
+  --text-secondary: var(--text-cool-grey);
+
+  /* Semantic Attendance & System States (clear differentiation on dark graphite) */
+  --status-present: #76C4A4;
+  --status-override: #CDBF9D;
+  --status-absent: #DF848E;
+  --status-info: #B9D0D8;
+
+  /* Borders & Specular Highlights */
+  --border-hairline: rgba(245, 246, 246, 0.08);
+  --border-default: rgba(245, 246, 246, 0.13);
+  --border-specular: rgba(245, 246, 246, 0.22);
+  --border-accent: rgba(185, 208, 216, 0.36);
+
+  /* Radii & Spacing Architecture */
+  --radius-control: 0.625rem;
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+
+  /* Glass Elevation Shadows */
+  --shadow-glass-layer1:
+    0 12px 32px -16px rgba(0, 0, 0, 0.62),
+    inset 0 1px 0 0 rgba(245, 246, 246, 0.08);
+  --shadow-glass-panel:
+    0 24px 56px -24px rgba(0, 0, 0, 0.78),
+    0 2px 10px -2px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 0 rgba(245, 246, 246, 0.14);
+  --shadow-glass-elevated:
+    0 32px 72px -20px rgba(0, 0, 0, 0.88),
+    0 4px 16px -4px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 0 rgba(245, 246, 246, 0.18);
+
+  /* Motion Timing Tokens */
+  --duration-feedback: 180ms;
+  --duration-hover: 220ms;
+  --duration-card: 260ms;
+  --duration-dialog: 320ms;
+  --ease-architectural: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html,
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100%;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+@layer utilities {
+  /* Manrope — Display, headings, hero & KPI numbers */
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  .metric-value {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+
+  /* IBM Plex Mono — IDs, timestamps, technical metadata */
+  .telemetry-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  /* Layer 1 — Background architectural glass strips */
+  .glass-layer-1 {
+    background: rgba(20, 23, 25, 0.62);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-glass-layer1);
+  }
+
+  /* Layer 2 — Primary frosted spatial glass panels */
+  .spatial-glass {
+    background: linear-gradient(
+      155deg,
+      rgba(34, 39, 42, 0.56) 0%,
+      rgba(20, 23, 25, 0.64) 54%,
+      rgba(9, 10, 11, 0.78) 100%
+    );
+    backdrop-filter: blur(20px) saturate(130%);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+    border: 1px solid var(--border-default);
+    box-shadow: var(--shadow-glass-panel);
+  }
+
+  /* Layer 3 — Elevated dialogs, auth cards & floating panels */
+  .glass-elevated {
+    background: linear-gradient(
+      160deg,
+      rgba(34, 39, 42, 0.88) 0%,
+      rgba(20, 23, 25, 0.94) 55%,
+      rgba(9, 10, 11, 0.96) 100%
+    );
+    backdrop-filter: blur(26px) saturate(140%);
+    -webkit-backdrop-filter: blur(26px) saturate(140%);
+    border: 1px solid var(--border-specular);
+    box-shadow: var(--shadow-glass-elevated);
+  }
+
+  /* Controlled interactive refraction highlight */
+  .spatial-glass-glow {
+    transition:
+      border-color var(--duration-hover) var(--ease-architectural),
+      box-shadow var(--duration-hover) var(--ease-architectural),
+      transform var(--duration-hover) var(--ease-architectural);
+  }
+
+  .spatial-glass-glow:hover {
+    border-color: var(--border-accent);
+    box-shadow:
+      0 26px 58px -22px rgba(0, 0, 0, 0.86),
+      0 0 0 1px rgba(185, 208, 216, 0.14),
+      inset 0 1px 0 0 rgba(185, 208, 216, 0.28);
+    transform: translateY(-2px);
+  }
+
+  /* Nested row surface — zero nested backdrop-blur for 60fps & crisp legibility */
+  .glass-row {
+    background-color: rgba(34, 39, 42, 0.48);
+    border: 1px solid var(--border-hairline);
+  }
+
+  /* High-readability data container for tables and operational panels */
+  .data-surface {
+    background-color: rgba(20, 23, 25, 0.9);
+    border: 1px solid var(--border-default);
+    box-shadow:
+      0 14px 36px -18px rgba(0, 0, 0, 0.72),
+      inset 0 1px 0 0 rgba(245, 246, 246, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spatial-glass-glow {
+    transition: none;
+  }
+
+  .spatial-glass-glow:hover {
+    transform: none;
+  }
+}
