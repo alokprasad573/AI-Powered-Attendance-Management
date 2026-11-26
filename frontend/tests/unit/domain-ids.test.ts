@@ -42,15 +42,17 @@ describe("domain/ids", () => {
     });
   });
 
-  it("produces legacy time-of-day greetings for teacher and student", () => {
+  it("produces time-of-day greetings for teacher and student", () => {
     expect(getTimeGreeting(8, "teacher")).toBe("Good Morning");
     expect(getTimeGreeting(14, "teacher")).toBe("Good Afternoon");
     expect(getTimeGreeting(18, "teacher")).toBe("Good Evening");
-    expect(getTimeGreeting(22, "teacher")).toBe("Hey there");
+    expect(getTimeGreeting(22, "teacher")).toBe("Good Night");
+    expect(getTimeGreeting(2, "teacher")).toBe("Welcome");
 
     expect(getTimeGreeting(9, "student")).toBe("Good Morning, Student");
     expect(getTimeGreeting(13, "student")).toBe("Good Afternoon, Student");
     expect(getTimeGreeting(18, "student")).toBe("Good Evening, Student");
-    expect(getTimeGreeting(23, "student")).toBe("Hello, Student 👋");
+    expect(getTimeGreeting(23, "student")).toBe("Good Night, Student");
+    expect(getTimeGreeting(2, "student")).toBe("Welcome, Back");
   });
 });
