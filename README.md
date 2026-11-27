@@ -256,7 +256,7 @@ erDiagram
 
 ```text
 Haziri.AI/
-├── frontend/                        # Next.js 16 App Router application (TypeScript strict)
+├── web/                             # Next.js 16 App Router application (TypeScript strict)
 │   ├── public/
 │   │   ├── brand/                   # Haziri.AI Face Scanner SVG mark
 │   │   └── models/                  # Browser-hosted MediaPipe & SFace ONNX model assets
@@ -277,7 +277,7 @@ Haziri.AI/
 │   ├── ARCHITECTURE.md              # Tech Stack & System Design (Mermaid diagrams)
 │   └── DATABASE.md                  # PostgreSQL Database Schema & ER Diagram
 ├── .github/workflows/
-│   └── frontend-ci.yml              # Automated lint, type-check, test, and production build CI
+│   └── web-ci.yml                   # Automated lint, type-check, test, and production build CI
 ├── LICENSE                          # MIT License
 └── README.md
 ```
@@ -296,7 +296,7 @@ Run `supabase/staging_bootstrap.sql` (or apply files in `supabase/migrations/` s
 *(Optional — for 6-digit OTP codes in addition to Sign-In Links during Student FaceID Login)*: In **Supabase Dashboard → Authentication → Email Templates → Magic Link**, include `{{ .Token }}` alongside the sign-in link (`{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email&next=/student/dashboard`).
 
 ### 3. Configure Environment Variables
-Copy `.env.example` into `frontend/.env.local`:
+Copy `.env.example` into `web/.env.local`:
 
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=https://<your-project-ref>.supabase.co
@@ -309,7 +309,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ### 4. Install & Run
 
 ```bash
-cd frontend
+cd web
 npm install
 npm run dev
 ```
@@ -320,7 +320,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Verification & Quality Commands
 
-Run from `frontend/`:
+Run from `web/`:
 
 ```bash
 npm run lint        # ESLint
