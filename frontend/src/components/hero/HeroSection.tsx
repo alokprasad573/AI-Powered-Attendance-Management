@@ -96,7 +96,7 @@ export function HeroSection({
             delay={0.05}
             className="font-display text-[clamp(2.4rem,5.4vw,4.5rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-[var(--text-primary)]"
           >
-            <h1>Skip Register.</h1>
+            <span>Skip Register.</span> <br />
             <span className="text-[var(--accent-highlight)]">Start the Class.</span>
           </KineticHeadline>
 
