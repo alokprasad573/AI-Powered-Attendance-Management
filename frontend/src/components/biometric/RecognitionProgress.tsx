@@ -83,12 +83,12 @@ export function RecognitionProgress({
             </p>
             <p className="truncate text-[11px] text-[var(--text-secondary)]">
               {progress === 100
-                ? "All verification stages complete"
+                ? "Verification complete"
                 : progress >= 58
-                ? "Facial geometry aligned"
+                ? "Face aligned clearly"
                 : progress >= 24
-                ? "Scanning optical feed"
-                : "Standby — start camera to scan"}
+                ? "Looking for your face"
+                : "Turn on your camera to begin"}
             </p>
           </div>
         </div>

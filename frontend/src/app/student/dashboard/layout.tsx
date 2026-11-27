@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   BookOpen,
   ClipboardCheck,
@@ -8,11 +9,13 @@ import {
 } from "lucide-react";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { AppFooter } from "@/components/layout/app-footer";
 import { AppHeader } from "@/components/layout/app-header";
 import { LogoutButton } from "@/components/layout/logout-button";
 import { PortalNav } from "@/components/layout/portal-nav";
 import { Badge } from "@/components/ui/badge";
 import { formatDisplayName, getTimeGreeting } from "@/domain/ids";
+import { buildMetadata } from "@/services/seo";
 import {
   AuthorizationError,
   requireAuthenticatedStudent,
@@ -20,6 +23,13 @@ import {
 import { getStudentBiometricOverview } from "@/services/templates.service";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildMetadata({
+  path: "/student/dashboard",
+  title: "Student Dashboard",
+  description: "Private Haziri.AI student attendance dashboard.",
+  indexable: false,
+});
 
 export default async function StudentDashboardLayout({
   children,
@@ -68,19 +78,19 @@ export default async function StudentDashboardLayout({
   return (
     <>
       <AppHeader
-        subtitle="Student Academic Portal"
+        subtitle="Student Portal"
         homeHref="/student/dashboard"
         rightSlot={<LogoutButton redirectTo="/" />}
       />
 
-      <main id="main-content" className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6">
+      <main id="main-content" className="mx-auto w-full max-w-7xl flex-1 space-y-6 px-4 py-8 sm:px-6">
         <section
           aria-label="Student profile"
-          className="spatial-glass relative overflow-hidden rounded-[20px] p-6"
+          className="spatial-glass relative overflow-hidden rounded-[22px] p-6"
         >
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#B9D0D8]/45 to-transparent"
+            className="specular-rule pointer-events-none absolute inset-x-10 top-0 h-px"
           />
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
@@ -98,10 +108,10 @@ export default async function StudentDashboardLayout({
                   }
                 >
                   {biometric.state === "enrolled_v2"
-                    ? "Face Template Active"
+                    ? "Face Check Ready"
                     : biometric.state === "legacy_dlib_needs_reenroll"
-                    ? "Legacy Face — Re-Enrollment Required"
-                    : "Face Template Pending"}
+                    ? "Face Update Needed"
+                    : "Face Setup Needed"}
                 </Badge>
               </div>
               <h1 className="font-display text-2xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-3xl">
@@ -115,9 +125,9 @@ export default async function StudentDashboardLayout({
                   />
                   {displayName}
                 </span>
-                <span className="text-[var(--text-muted)]">•</span>
+                <span className="text-[var(--text-muted)]">·</span>
                 <span>Gender: {displayGender}</span>
-                <span className="text-[var(--text-muted)]">•</span>
+                <span className="text-[var(--text-muted)]">·</span>
                 <span>
                   Age: <span className="telemetry-num text-[var(--text-primary)]">{student.age}</span>
                 </span>
@@ -153,6 +163,8 @@ export default async function StudentDashboardLayout({
 
         {children}
       </main>
+
+      <AppFooter compact />
     </>
   );
 }

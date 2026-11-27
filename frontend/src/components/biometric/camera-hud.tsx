@@ -38,7 +38,7 @@ function loadImageElement(url: string): Promise<HTMLImageElement> {
 }
 
 export function CameraHud({
-  title = "Biometric Camera Viewport",
+  title = "Camera Preview",
   statusLabel,
   confidencePercent = null,
   verified = false,
@@ -210,7 +210,7 @@ export function CameraHud({
     canvas.height = height;
     const ctx = canvas.getContext("2d");
     if (!ctx) {
-      setCameraError("Unable to initialize 2D canvas for capture.");
+      setCameraError("Unable to prepare photo capture right now.");
       return;
     }
 
@@ -307,7 +307,7 @@ export function CameraHud({
             </div>
             <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>
             <p className="max-w-xs text-xs leading-relaxed text-[var(--text-secondary)]">
-              Camera activates only when requested. Frames stay strictly in browser memory.
+              Your camera opens only when you tap Start Camera, and photos never leave your device.
             </p>
           </div>
         ) : null}
@@ -353,12 +353,12 @@ export function CameraHud({
           <div className="flex items-center gap-2.5">
             {liveLandmarksCount ? (
               <span className="telemetry-num text-[11px] text-[var(--accent-highlight)]">
-                {liveLandmarksCount} PTS
+                Aligned
               </span>
             ) : null}
             {typeof displayConfidence === "number" ? (
               <span className="telemetry-num text-xs font-medium text-[var(--accent-primary)]">
-                CONFIDENCE {displayConfidence.toFixed(1)}%
+                Clarity {displayConfidence.toFixed(0)}%
               </span>
             ) : null}
           </div>

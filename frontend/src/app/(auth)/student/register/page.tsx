@@ -1,12 +1,19 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { AuthShell } from "@/components/auth/auth-shell";
 import { StudentRegisterForm } from "@/components/auth/student-register-form";
-import { AppHeader } from "@/components/layout/app-header";
-import { Button } from "@/components/ui/button";
+import { PUBLIC_ROUTES } from "@/constants/seo";
 import { generateStudentId } from "@/domain/ids";
 import { subjectCodeSchema } from "@/lib/validations/subjects";
+import { buildMetadata } from "@/services/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildMetadata({
+  path: PUBLIC_ROUTES.studentRegister,
+  title: "Student Registration",
+  description:
+    "Create your Haziri.AI student account and set up your private face profile in seconds.",
+});
 
 export default async function StudentRegisterPage({
   searchParams,
@@ -22,24 +29,32 @@ export default async function StudentRegisterPage({
   const initialStudentId = generateStudentId();
 
   return (
-    <>
-      <AppHeader
-        subtitle="New Student Enrollment"
-        rightSlot={
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Back to Home
-            </Link>
-          </Button>
-        }
+    <AuthShell
+      headerSubtitle="Student Registration"
+      roleBadge="New Student"
+      headline="Set up once. Check in effortlessly all semester."
+      description="Create your student profile and optionally capture a quick face check so teachers can mark your attendance automatically."
+      alternateHref="/student/login"
+      alternateLabel="Existing Student Sign In"
+      highlights={[
+        {
+          label: "Consent First",
+          detail: "You review and confirm permission before any face check data is saved.",
+        },
+        {
+          label: "No Photos Stored",
+          detail: "Camera snapshots are discarded right on your device immediately after setup.",
+        },
+        {
+          label: "Single Face Check",
+          detail: "Setup ensures only your face is clearly framed before continuing.",
+        },
+      ]}
+    >
+      <StudentRegisterForm
+        initialStudentId={initialStudentId}
+        joinCode={joinCode}
       />
-      <main id="main-content" className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:py-14">
-        <StudentRegisterForm
-          initialStudentId={initialStudentId}
-          joinCode={joinCode}
-        />
-      </main>
-    </>
+    </AuthShell>
   );
 }

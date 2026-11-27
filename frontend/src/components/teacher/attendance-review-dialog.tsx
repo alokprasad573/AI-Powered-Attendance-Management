@@ -128,9 +128,11 @@ export function AttendanceReviewDialog({
             summary.ambiguousFaceCount > 0 ||
             summary.lowQualityFaceCount > 0) ? (
             <Alert variant="info">
-              Detection diagnostics: {summary.totalFacesDetected} total face(s) scanned •{" "}
-              {summary.unknownFaceCount} unknown • {summary.ambiguousFaceCount} ambiguous •{" "}
-              {summary.lowQualityFaceCount} low quality (never auto-marked present).
+              Out of {summary.totalFacesDetected} face(s) found:{" "}
+              {summary.unknownFaceCount} unrecognized,{" "}
+              {summary.ambiguousFaceCount} close call(s), and{" "}
+              {summary.lowQualityFaceCount} unclear framing/lighting (left unmarked
+              so you can review and adjust manually below).
             </Alert>
           ) : null}
 

@@ -220,7 +220,7 @@ export function StudentLoginForm({
     setFaceBusy(true);
     setFaceLandmarksCount(null);
     setFacePipelineState("camera_initializing");
-    setFaceStatus("Initializing biometric models...");
+    setFaceStatus("Starting face check...");
     try {
       if (!engineRef.current) {
         engineRef.current = resolveFaceRecognitionEngine();
@@ -228,19 +228,19 @@ export function StudentLoginForm({
       }
 
       setFacePipelineState("analyzing_landmarks");
-      setFaceStatus("Detecting face...");
+      setFaceStatus("Looking for your face...");
       const detections = await engineRef.current.detectFaces(frame.imageElement);
       if (detections.length === 0) {
         setFacePipelineState("no_face_detected");
-        setFaceStatus("Face not found");
-        setFaceError("Face not found! Position one face clearly in the frame.");
+        setFaceStatus("No face found");
+        setFaceError("We couldn't see a face. Please face the camera clearly and try again.");
         return;
       }
       if (detections.length > 1) {
         setFacePipelineState("multiple_faces_detected");
-        setFaceStatus("Multiple faces detected");
+        setFaceStatus("Multiple faces in view");
         setFaceError(
-          "More than one face detected! Ensure only your face is visible."
+          "More than one person appears in the frame. Make sure only your face is visible."
         );
         return;
       }
@@ -248,21 +248,21 @@ export function StudentLoginForm({
       const primaryFace = detections[0];
       if (!primaryFace || !primaryFace.qualityOk) {
         setFacePipelineState("recognition_failed");
-        setFaceStatus("Low quality frame");
+        setFaceStatus("Photo unclear");
         setFaceError(
-          "Face framing or lighting quality was too low. Center your face clearly and try again."
+          "Framing or lighting was too unclear. Center your face in brighter light and try again."
         );
         return;
       }
 
       setFaceLandmarksCount(primaryFace.landmarksCount ?? null);
       setFacePipelineState("face_detected");
-      setFaceStatus("Extracting 128D SFace template...");
+      setFaceStatus("Reading face signature...");
       const template =
         await engineRef.current.createEnrollmentTemplate(primaryFace);
 
       setFacePipelineState("matching_identity");
-      setFaceStatus("Verifying identity with server...");
+      setFaceStatus("Checking your account...");
       const res = await fetch("/api/auth/student/face-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -403,8 +403,8 @@ export function StudentLoginForm({
         </div>
         <CardDescription>
           {joinCode
-            ? `Sign in to enroll in subject ${joinCode}.`
-            : "Access your enrolled subjects, attendance metrics, and biometric profile."}
+            ? `Sign in to join subject ${joinCode}.`
+            : "View your classes, check your attendance history, and manage your profile."}
         </CardDescription>
       </CardHeader>
 
@@ -455,14 +455,14 @@ export function StudentLoginForm({
                         className="inline-flex items-center gap-1 text-xs text-[var(--accent-primary)] transition-colors hover:text-[#DCE9EE]"
                       >
                         <KeyRound className="h-3.5 w-3.5" aria-hidden="true" />
-                        Activate legacy / Reset password
+                        Activate account / Reset password
                       </button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Student Account Recovery</DialogTitle>
                         <DialogDescription>
-                          Enter your registered student email to set or reset a Supabase Auth password.
+                          Enter your registered student email to set or reset your password.
                         </DialogDescription>
                       </DialogHeader>
                       <form onSubmit={handleRecoverySubmit} className="mt-4 space-y-4">
@@ -533,12 +533,12 @@ export function StudentLoginForm({
                 <div>
 
                   <p className="font-semibold text-[var(--text-primary)]">
-                    Passwordless Face Recognition + Email Verification
+                    Sign In With Face Check + Email Link
                   </p>
                   <p className="mt-1 text-xs text-[var(--text-secondary)]">
-                    Enter your Student ID or email and scan your face to verify your identity.
-                    Once verified, we’ll send a secure sign-in link to your registered email
-                    to help you access your account.
+                    Enter your Student ID or email and scan your face to confirm it&apos;s
+                    you. Once matched, we&apos;ll send a quick sign-in link to your
+                    registered email.
                   </p>
 
                 </div>
@@ -661,7 +661,7 @@ export function StudentLoginForm({
                     aria-expanded={showOtpEntry}
                     className="flex w-full items-center justify-between text-xs font-medium text-[var(--accent-primary)] transition-colors hover:text-[#DCE9EE]"
                   >
-                    <span>Have a 6-digit OTP code in your email instead?</span>
+                    <span>Have a 6-digit code in your email instead?</span>
                     <ChevronDown
                       className={`h-4 w-4 transition-transform ${showOtpEntry ? "rotate-180" : ""}`}
                       aria-hidden="true"
@@ -676,7 +676,7 @@ export function StudentLoginForm({
                     >
                       <div className="space-y-2">
                         <Label htmlFor="student-face-otp">
-                          Email Verification Code (OTP)
+                          Email Verification Code
                         </Label>
                         <Input
                           id="student-face-otp"

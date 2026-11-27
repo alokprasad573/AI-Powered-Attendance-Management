@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { TransitionLink } from "@/components/motion/route-transition-provider";
 import { cn } from "@/lib/utils";
 
 export interface PortalNavItem {
@@ -31,19 +31,25 @@ export function PortalNav({
 
           return (
             <li key={item.href} className="shrink-0">
-              <Link
+              <TransitionLink
                 href={item.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "inline-flex min-h-10 items-center gap-2 rounded-[10px] px-4 py-2 text-sm font-medium transition-[background-color,border-color,color,box-shadow] duration-200",
+                  "relative inline-flex min-h-10 items-center gap-2 rounded-[10px] px-4 py-2 text-sm font-medium transition-[background-color,border-color,color,box-shadow] duration-200",
                   isActive
-                    ? "border border-[#B9D0D8]/34 bg-[#22272A]/92 text-[var(--text-primary)] shadow-[inset_0_1px_0_rgba(185,208,216,0.22)] [&_svg]:text-[var(--accent-primary)]"
+                    ? "border border-[#B9D0D8]/36 bg-[#22272A]/95 text-[var(--text-primary)] shadow-[inset_0_1px_0_rgba(185,208,216,0.24)] [&_svg]:text-[var(--accent-primary)]"
                     : "border border-transparent text-[var(--text-secondary)] hover:bg-[#22272A]/60 hover:text-[var(--text-primary)]"
                 )}
               >
                 {item.icon}
                 <span>{item.label}</span>
-              </Link>
+                {isActive ? (
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-3 bottom-0 h-px bg-gradient-to-r from-transparent via-[#B9D0D8]/75 to-transparent"
+                  />
+                ) : null}
+              </TransitionLink>
             </li>
           );
         })}

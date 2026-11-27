@@ -23,7 +23,7 @@ const INITIAL_TELEMETRY: BiometricTelemetrySnapshot = {
   landmarksCount: null,
   detectionConfidencePercent: null,
   matchConfidencePercent: null,
-  resultLabel: "Camera standby — start scanner to run live MediaPipe landmark tracking.",
+  resultLabel: "Camera ready — press Start Scanning to preview live face detection.",
   lastRecognitionLabel: null,
   processingMs: null,
 };
@@ -128,7 +128,7 @@ export function LiveFaceScanner({
         landmarksCount: null,
         detectionConfidencePercent: null,
         matchConfidencePercent: null,
-        resultLabel: "Camera device API unavailable in this environment.",
+        resultLabel: "Camera access isn't supported in this browser window.",
         lastRecognitionLabel: null,
         processingMs: null,
       });
@@ -142,7 +142,7 @@ export function LiveFaceScanner({
       landmarksCount: null,
       detectionConfidencePercent: null,
       matchConfidencePercent: null,
-      resultLabel: "Requesting camera stream & loading MediaPipe FaceLandmarker...",
+      resultLabel: "Turning on your camera...",
       lastRecognitionLabel: telemetry.lastRecognitionLabel,
       processingMs: null,
     });
@@ -183,7 +183,7 @@ export function LiveFaceScanner({
       setTelemetry((prev) => ({
         ...prev,
         state: "camera_active",
-        resultLabel: "Live MediaPipe tracking active — center one face in view.",
+        resultLabel: "Camera is active — center your face in the frame.",
       }));
 
       // Run MediaPipe detection independently of Three.js & Framer Motion loops (~9 FPS)
@@ -233,7 +233,7 @@ export function LiveFaceScanner({
                   ? primary.detectionConfidence * 100
                   : null,
                 matchConfidencePercent: null,
-                resultLabel: `${result.faces.length} faces in frame — isolate one subject for landmark lock.`,
+                resultLabel: `${result.faces.length} faces in view — show only one face for clear alignment.`,
                 processingMs: result.processingMs,
               }));
               return;
@@ -253,8 +253,8 @@ export function LiveFaceScanner({
                 detectionConfidencePercent: primary.detectionConfidence * 100,
                 matchConfidencePercent: null,
                 resultLabel:
-                  "Sign in to Student Portal for verified identity matching.",
-                lastRecognitionLabel: `Tracked ${nowLabel}`,
+                  "Sign in through Student Portal to verify your attendance profile.",
+                lastRecognitionLabel: `Updated ${nowLabel}`,
                 processingMs: result.processingMs,
               });
               return;
@@ -270,7 +270,7 @@ export function LiveFaceScanner({
                 ? primary.detectionConfidence * 100
                 : null,
               matchConfidencePercent: null,
-              resultLabel: "Face detected — refining MediaPipe facial landmark coordinates...",
+              resultLabel: "Face spotted — centering details...",
               processingMs: result.processingMs,
             }));
           })
@@ -279,7 +279,7 @@ export function LiveFaceScanner({
             setTelemetry((prev) => ({
               ...prev,
               state: "camera_error",
-              resultLabel: "Live MediaPipe inference interrupted — retry camera.",
+              resultLabel: "Camera check interrupted — please try starting again.",
             }));
           })
           .finally(() => {
@@ -296,8 +296,8 @@ export function LiveFaceScanner({
       onLiveTrackingChange?.(false);
       setCameraError(
         isDenied
-          ? "Camera permission was denied. Allow camera access in your browser to run live biometric landmark tracking."
-          : "Unable to initialize camera or MediaPipe models. Check camera device availability."
+          ? "Camera permission was denied. Allow camera access in your browser to preview live face tracking."
+          : "Unable to open your camera right now. Please check that a camera is connected."
       );
       setTelemetry({
         state: isDenied ? "camera_permission_required" : "camera_error",
@@ -307,7 +307,7 @@ export function LiveFaceScanner({
         matchConfidencePercent: null,
         resultLabel: isDenied
           ? "Camera permission required."
-          : "Camera initialization failed.",
+          : "Could not start camera.",
         lastRecognitionLabel: telemetry.lastRecognitionLabel,
         processingMs: null,
       });
@@ -315,7 +315,11 @@ export function LiveFaceScanner({
   }
 
   return (
-    <div className="flex h-full flex-col justify-between gap-4 rounded-[18px] border border-[var(--border-default)] bg-[#141719]/82 p-4 shadow-[inset_0_1px_0_rgba(245,246,246,0.1)]">
+    <div className="relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-[20px] border border-[var(--border-default)] bg-[#141719]/84 p-4 shadow-[inset_0_1px_0_rgba(245,246,246,0.12)] sm:p-5">
+      <span
+        aria-hidden="true"
+        className="specular-rule pointer-events-none absolute inset-x-10 top-0 h-px"
+      />
       {/* Scanner Viewport */}
       <div
         className="relative aspect-[4/3] w-full overflow-hidden rounded-[14px] border border-[var(--border-default)] bg-[#060708]"
@@ -331,16 +335,36 @@ export function LiveFaceScanner({
         />
 
         {!cameraActive ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 px-5 text-center">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-[12px] border border-[#B9D0D8]/28 bg-[#141719] text-[var(--accent-primary)] shadow-[inset_0_1px_0_rgba(245,246,246,0.12)]">
+          <div className="obsidian-grid absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-4 top-4 h-5 w-5 rounded-tl-[6px] border-l-2 border-t-2 border-[#B9D0D8]/45"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute right-4 top-4 h-5 w-5 rounded-tr-[6px] border-r-2 border-t-2 border-[#B9D0D8]/45"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-4 left-4 h-5 w-5 rounded-bl-[6px] border-b-2 border-l-2 border-[#91AAB4]/35"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-4 right-4 h-5 w-5 rounded-br-[6px] border-b-2 border-r-2 border-[#91AAB4]/35"
+            />
+            <div className="inline-flex h-13 w-13 items-center justify-center rounded-[14px] border border-[#B9D0D8]/30 bg-[#141719]/95 text-[var(--accent-primary)] shadow-[0_14px_30px_-14px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(245,246,246,0.16)]">
               <Camera className="h-5 w-5" aria-hidden="true" />
             </div>
-            <p className="font-display text-sm font-semibold text-[var(--text-primary)]">
-              {initializing ? "Initializing Biometric Scanner..." : "Live Biometric Face Scanner"}
-            </p>
-            <p className="max-w-xs text-xs leading-relaxed text-[var(--text-secondary)]">
-              Click Start Scanning
-            </p>
+            <div className="space-y-1">
+              <p className="font-display text-sm font-semibold tracking-tight text-[var(--text-primary)] sm:text-base">
+                {initializing
+                  ? "Starting Camera..."
+                  : "Live Biometric Face Scanner"}
+              </p>
+              <p className="max-w-xs text-xs leading-relaxed text-[var(--text-secondary)]">
+                Private camera preview. Click Start Scanning to see live face tracking on your device.
+              </p>
+            </div>
           </div>
         ) : null}
 
@@ -366,7 +390,7 @@ export function LiveFaceScanner({
             }`}
           />
           <span className="telemetry-num text-[10px] text-[var(--text-primary)]">
-            {cameraActive ? "LIVE OPTICS" : initializing ? "LOADING" : "STANDBY"}
+            {cameraActive ? "CAMERA ON" : initializing ? "STARTING" : "READY"}
           </span>
         </div>
       </div>
@@ -426,7 +450,7 @@ export function LiveFaceScanner({
             className="h-3.5 w-3.5 text-[var(--accent-highlight)]"
             aria-hidden="true"
           />
-          In-Browser AI
+          Runs On Your Device
         </span>
       </div>
     </div>

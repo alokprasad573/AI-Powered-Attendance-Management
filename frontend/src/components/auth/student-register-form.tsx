@@ -113,12 +113,12 @@ export function StudentRegisterForm({
         const template = await engineRef.current.createEnrollmentTemplate(face);
         setCapturedTemplate(template);
         setFaceVerified(true);
-        setFaceStatus("Biometric template ready");
+        setFaceStatus("Face setup ready");
       } catch (err) {
         if (err instanceof AiCompatibilityGateError) {
-          setFaceStatus("Face detected — template extraction unavailable");
+          setFaceStatus("Face captured — setup temporarily unavailable");
           setFaceNotice(
-            "Face detected cleanly via MediaPipe, but biometric extraction is currently unavailable. You may still register your profile and enroll your face later from the student dashboard."
+            "Your face was seen clearly, though automatic face setup is unavailable right now. You can finish creating your account and set up your face later from your dashboard."
           );
           return;
         }
@@ -165,7 +165,7 @@ export function StudentRegisterForm({
     }
 
     if (capturedTemplate && !consentAccepted) {
-      setErrorMessage("Please confirm biometric template consent before saving.");
+      setErrorMessage("Please confirm face check-in consent before saving.");
       return;
     }
 
@@ -231,13 +231,13 @@ export function StudentRegisterForm({
       />
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle as="h1" className="text-2xl">New Student Enrollment</CardTitle>
+          <CardTitle as="h1" className="text-2xl">Create Student Account</CardTitle>
           <Badge>
             Assigned ID: <span className="telemetry-num">{initialStudentId}</span>
           </Badge>
         </div>
         <CardDescription>
-          Register your student profile and capture your face for attendance recognition.
+          Enter your details and take a quick photo so teachers can mark your attendance automatically.
         </CardDescription>
       </CardHeader>
 
@@ -371,15 +371,15 @@ export function StudentRegisterForm({
           <div className="glass-row space-y-3 rounded-[16px] p-4">
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm font-medium text-[var(--text-primary)]">
-                Register Your Face (Browser AI)
+                Set Up Face Check-In (Optional)
               </p>
               <Badge variant={faceVerified ? "present" : "neutral"}>
-                {faceVerified ? "Template Ready" : "Browser AI Ready"}
+                {faceVerified ? "Face Ready" : "Private & On-Device"}
               </Badge>
             </div>
 
             <CameraHud
-              title="Position your face in the center"
+              title="Center your face in the frame"
               statusLabel={faceStatus}
               confidencePercent={faceConfidence}
               verified={faceVerified}
@@ -404,10 +404,10 @@ export function StudentRegisterForm({
               <Label htmlFor="biometric-consent" className="text-xs leading-relaxed text-[var(--text-secondary)]">
                 <span className="inline-flex items-center gap-1 font-semibold text-[var(--accent-primary)]">
                   <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                  Biometric Consent:
+                  Privacy Consent:
                 </span>{" "}
-                I consent to generating and storing a model-versioned mathematical face
-                template (never raw photos) solely for attendance verification.
+                I agree to create and store a private digital face profile (never
+                raw photos) strictly to mark my classroom attendance.
               </Label>
             </div>
           </div>

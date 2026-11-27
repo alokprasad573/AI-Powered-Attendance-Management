@@ -59,7 +59,7 @@ export function BiometricReenrollDialog({
     setVerified(false);
     setConfidence(null);
     setTemplate(null);
-    setStatusLabel("Running MediaPipe face check...");
+    setStatusLabel("Checking face framing...");
 
     try {
       if (!engineRef.current) {
@@ -80,8 +80,8 @@ export function BiometricReenrollDialog({
 
       const face = detections[0];
       if (!face || !face.qualityOk) {
-        setStatusLabel("Low quality");
-        setNotice("Face bounding box or confidence is too low.");
+        setStatusLabel("Photo unclear");
+        setNotice("Please center your face clearly in good lighting and try again.");
         return;
       }
 
@@ -89,15 +89,15 @@ export function BiometricReenrollDialog({
       const created = await engineRef.current.createEnrollmentTemplate(face);
       setTemplate(created);
       setVerified(true);
-      setStatusLabel("Template generated");
+      setStatusLabel("Face profile ready");
     } catch (err) {
       if (err instanceof AiCompatibilityGateError) {
-        setStatusLabel("BLK-01 gate active");
+        setStatusLabel("Setup unavailable");
         setNotice(err.message);
         return;
       }
-      setStatusLabel("Capture error");
-      setNotice(err instanceof Error ? err.message : "Failed to analyze face.");
+      setStatusLabel("Scan error");
+      setNotice(err instanceof Error ? err.message : "Could not check your face.");
     } finally {
       URL.revokeObjectURL(frame.previewUrl);
     }
@@ -114,14 +114,14 @@ export function BiometricReenrollDialog({
       });
       const data = (await response.json()) as { ok: boolean; message: string };
       if (!response.ok || !data.ok) {
-        setNotice(data.message || "Failed to save biometric template.");
+        setNotice(data.message || "Could not save your face profile.");
         return;
       }
       toast.success(data.message);
       setOpen(false);
       router.refresh();
     } catch {
-      setNotice("Network error saving template.");
+      setNotice("Network error while saving your face profile.");
     } finally {
       setSaving(false);
     }
@@ -133,23 +133,24 @@ export function BiometricReenrollDialog({
         <Button variant={biometricState === "enrolled_v2" ? "outline" : "warning"} size="sm">
           <ScanFace className="h-4 w-4" aria-hidden="true" />
           {biometricState === "enrolled_v2"
-            ? "Update Face Template"
-            : "Re-Enroll Face (v2 Model)"}
+            ? "Update Face Profile"
+            : "Set Up Face Profile"}
         </Button>
       </DialogTrigger>
 
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>Biometric Face Template Enrollment</DialogTitle>
+          <DialogTitle>Face Check-In Setup</DialogTitle>
           <DialogDescription>
-            Legacy 128D dlib embeddings are incompatible with the browser AI stack and
-            excluded automatically. Capture a fresh v2 template below.
+            {biometricState === "legacy_dlib_needs_reenroll"
+              ? "Your older face profile needs a quick refresh before teachers can recognize you automatically. Take a new photo below."
+              : "Take a quick photo below so your teachers can recognize you automatically in class."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="mt-4 space-y-4">
           <CameraHud
-            title="Student Face Re-Enrollment"
+            title="Center Your Face"
             statusLabel={statusLabel}
             confidencePercent={confidence}
             verified={verified}
@@ -170,9 +171,9 @@ export function BiometricReenrollDialog({
             <Label htmlFor="reenroll-consent" className="text-xs leading-relaxed text-[var(--text-secondary)]">
               <span className="inline-flex items-center gap-1 font-semibold text-[var(--accent-primary)]">
                 <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                Consent:
+                Privacy Consent:
               </span>{" "}
-              Store only the mathematical model-versioned template vector for attendance.
+              I agree to save a private digital face profile (never raw photos) strictly for class attendance.
             </Label>
           </div>
         </div>
@@ -186,7 +187,7 @@ export function BiometricReenrollDialog({
             disabled={!template || !consent || saving}
             onClick={() => void handleSaveTemplate()}
           >
-            {saving ? "Saving..." : "Save Active Template"}
+            {saving ? "Saving..." : "Save Face Profile"}
           </Button>
         </DialogFooter>
       </DialogContent>

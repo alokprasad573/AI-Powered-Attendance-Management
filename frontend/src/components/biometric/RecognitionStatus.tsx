@@ -58,33 +58,27 @@ export function RecognitionStatus({ telemetry }: RecognitionStatusProps) {
             </Badge>
           </motion.div>
         </AnimatePresence>
-
-        {telemetry.processingMs !== null ? (
-          <span className="telemetry-num text-[11px] text-[var(--text-secondary)]">
-            {Math.round(telemetry.processingMs)} ms/frame
-          </span>
-        ) : null}
       </div>
 
-      {/* Real Model Telemetry Grid — never shows fabricated metrics */}
+      {/* Live Scan Status Grid */}
       <dl className="grid grid-cols-3 gap-2">
         <div className="glass-row rounded-[10px] px-3 py-2">
-          <dt className="text-[11px] text-[var(--text-secondary)]">Faces</dt>
+          <dt className="text-[11px] text-[var(--text-secondary)]">Faces in View</dt>
           <dd className="telemetry-num mt-0.5 text-sm font-medium text-[var(--text-primary)]">
             {telemetry.detectedFacesCount}
           </dd>
         </div>
         <div className="glass-row rounded-[10px] px-3 py-2">
-          <dt className="text-[11px] text-[var(--text-secondary)]">Landmarks</dt>
+          <dt className="text-[11px] text-[var(--text-secondary)]">Alignment</dt>
           <dd className="telemetry-num mt-0.5 text-sm font-medium text-[var(--accent-primary)]">
-            {telemetry.landmarksCount ? `${telemetry.landmarksCount} pts` : "—"}
+            {telemetry.landmarksCount ? "Clear" : "—"}
           </dd>
         </div>
         <div className="glass-row rounded-[10px] px-3 py-2">
-          <dt className="text-[11px] text-[var(--text-secondary)]">Confidence</dt>
+          <dt className="text-[11px] text-[var(--text-secondary)]">Clarity</dt>
           <dd className="telemetry-num mt-0.5 text-sm font-medium text-[var(--accent-highlight)]">
             {typeof confidenceValue === "number"
-              ? `${confidenceValue.toFixed(1)}%`
+              ? `${confidenceValue.toFixed(0)}%`
               : "—"}
           </dd>
         </div>

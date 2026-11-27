@@ -117,7 +117,7 @@ export function TeacherRegisterForm({
           </Badge>
         </div>
         <CardDescription>
-          Create your teacher profile to manage subjects and take AI attendance.
+          Create your teacher account to set up classes and take attendance effortlessly.
         </CardDescription>
       </CardHeader>
 

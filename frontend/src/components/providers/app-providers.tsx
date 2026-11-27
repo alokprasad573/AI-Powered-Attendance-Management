@@ -3,11 +3,22 @@
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import type { ReactNode } from "react";
+import { LenisProvider } from "@/components/motion/lenis-provider";
+import { MotionPauseProvider } from "@/components/motion/motion-pause-context";
+import { OpticalCursor } from "@/components/motion/primitives";
+import { RouteTransitionProvider } from "@/components/motion/route-transition-provider";
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <MotionConfig reducedMotion="user">
-      {children}
+      <MotionPauseProvider>
+        <LenisProvider>
+          <RouteTransitionProvider>
+            {children}
+            <OpticalCursor />
+          </RouteTransitionProvider>
+        </LenisProvider>
+      </MotionPauseProvider>
       <Toaster
         position="top-right"
         theme="dark"

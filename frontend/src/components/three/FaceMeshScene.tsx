@@ -403,7 +403,13 @@ function FaceMeshRig({
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
-    elapsedRef.current += dt;
+    const decorativePaused =
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.motionPaused === "true";
+
+    if (!decorativePaused) {
+      elapsedRef.current += dt;
+    }
     const t = elapsedRef.current;
     const liveLandmarks = liveBridgeRef.current.landmarks;
     const hasLiveMesh = Boolean(
@@ -416,7 +422,8 @@ function FaceMeshRig({
       const uScanY = pointMatRef.current.uniforms.uScanY;
       if (uTime) uTime.value = t;
       if (uScanY) {
-        uScanY.value = reducedMotion ? 0.15 : Math.sin(t * 1.05) * 1.28;
+        uScanY.value =
+          reducedMotion || decorativePaused ? 0.15 : Math.sin(t * 1.05) * 1.28;
       }
     }
 
@@ -430,7 +437,7 @@ function FaceMeshRig({
 
     if (standbyGroupRef.current) {
       standbyGroupRef.current.visible = !hasLiveMesh;
-      if (!hasLiveMesh && !reducedMotion) {
+      if (!hasLiveMesh && !reducedMotion && !decorativePaused) {
         const targetRotY =
           pointerRef.current.x * 0.3 + Math.sin(t * 0.36) * 0.28;
         const targetRotX =

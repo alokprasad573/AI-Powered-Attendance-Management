@@ -144,7 +144,7 @@ export function AttendanceWorkflowClient({
     }
 
     setAnalyzing(true);
-    setAnalysisProgress("Connecting model...");
+    setAnalysisProgress("Loading class roster...");
 
     try {
       const rosterRes = await fetch(
@@ -158,13 +158,13 @@ export function AttendanceWorkflowClient({
 
       if (!rosterRes.ok || !rosterPayload.ok || !rosterPayload.roster) {
         setWorkflowWarning(
-          rosterPayload.message ?? "Could not verify enrolled roster for subject."
+          rosterPayload.message ?? "Could not load the student list for this subject."
         );
         return;
       }
 
       if (rosterPayload.roster.length === 0) {
-        setWorkflowWarning("No students are enrolled in this course.");
+        setWorkflowWarning("No students have joined this subject yet.");
         return;
       }
 
@@ -181,7 +181,7 @@ export function AttendanceWorkflowClient({
 
       if (rosterData.galleryTemplates.length === 0) {
         setWorkflowWarning(
-          `No enrolled students in this subject have active v2 biometric templates yet (${rosterData.roster.length} enrolled). Students using legacy dlib descriptors must re-enroll in the Student Portal, or you can run a manual roll call below.`
+          `None of the ${rosterData.roster.length} enrolled students have an active face profile yet. Ask students to set up their face in the Student Portal, or take manual attendance below.`
         );
         setBlk01ManualOffer(rosterData);
         return;
@@ -190,14 +190,14 @@ export function AttendanceWorkflowClient({
       try {
         if (!engineRef.current) {
           engineRef.current = resolveFaceRecognitionEngine();
-          setAnalysisProgress("Loading face recognition model...");
+          setAnalysisProgress("Getting scanner ready...");
           await engineRef.current.initialize();
         }
       } catch (initErr) {
         const message =
           initErr instanceof Error
             ? initErr.message
-            : "Browser AI runtime failed to initialize.";
+            : "The face scanner could not start in your browser.";
         setWorkflowWarning(
           `${message} You can retry online or run a manual roll call across all ${rosterData.roster.length} enrolled students below.`
         );
@@ -493,7 +493,7 @@ export function AttendanceWorkflowClient({
                   disabled={analyzing}
                 >
                   <ScanFace className="h-4 w-4" aria-hidden="true" />
-                  {analyzing ? "Scanning Classroom Photos..." : "Run Face Analysis"}
+                  {analyzing ? "Scanning Classroom Photos..." : "Scan Classroom Photos"}
                 </Button>
               </div>
             </div>

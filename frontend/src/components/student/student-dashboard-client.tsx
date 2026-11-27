@@ -92,33 +92,33 @@ export function StudentDashboardClient({
             {
               label: "Enrolled Subjects",
               value: subjects.length,
-              detail: "Active course memberships",
+              detail: "Classes you joined",
               accent: "platinum",
             },
             {
               label: "Classes Attended",
               value: totalAttended,
-              detail: `Of ${totalClasses} recorded sessions`,
+              detail: `Out of ${totalClasses} classes`,
               accent: "silver",
             },
             {
               label: "Attendance Rate",
               value: overallRate,
-              detail: "Aggregate across subjects",
+              detail: "Overall across subjects",
               accent: "gold",
             },
             {
-              label: "Biometric Template",
+              label: "Face Check-In",
               value:
                 biometricState === "enrolled_v2"
-                  ? "Active"
+                  ? "Ready"
                   : biometricState === "legacy_dlib_needs_reenroll"
-                  ? "Legacy"
-                  : "Pending",
+                  ? "Update Needed"
+                  : "Not Set Up",
               detail:
                 biometricState === "enrolled_v2"
-                  ? "Ready to Use"
-                  : "Action required for recognition",
+                  ? "Active for roll call"
+                  : "Needed for automatic check-in",
               accent: biometricState === "enrolled_v2" ? "present" : "gold",
             },
           ]}
@@ -131,13 +131,13 @@ export function StudentDashboardClient({
             <div>
               <p className="font-semibold text-[#EFE8D7]">
                 {biometricState === "legacy_dlib_needs_reenroll"
-                  ? "Legacy Face Descriptor Detected — Re-Enrollment Required"
-                  : "Face Template Not Yet Enrolled"}
+                  ? "Face Profile Refresh Needed"
+                  : "Face Profile Not Set Up Yet"}
               </p>
               <p className="mt-1 text-xs text-[var(--text-secondary)]">
                 {biometricState === "legacy_dlib_needs_reenroll"
-                  ? "Your existing 128D dlib embedding is preserved for historical compatibility and cannot be compared with the browser SFace v2 model. Enroll your updated template to enable classroom recognition."
-                  : "Capture your versioned face template so teachers can recognize you in classroom attendance sessions."}
+                  ? "Your older face setup can't be read by the updated class scanner. Take a quick new photo so your teacher can recognize you."
+                  : "Take one quick photo so teachers can automatically mark your attendance in class."}
               </p>
             </div>
             <BiometricReenrollDialog biometricState={biometricState} />

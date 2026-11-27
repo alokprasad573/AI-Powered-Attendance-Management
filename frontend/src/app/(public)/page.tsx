@@ -1,15 +1,26 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { LandingNav } from "@/components/home/landing-nav";
 import { PortalHome } from "@/components/home/portal-home";
 import { AppHeader } from "@/components/layout/app-header";
+import { TransitionLink } from "@/components/motion/route-transition-provider";
 import { Button } from "@/components/ui/button";
+import { PUBLIC_ROUTES, SITE_DESCRIPTION, SITE_TITLE_DEFAULT } from "@/constants/seo";
 import { subjectCodeSchema } from "@/lib/validations/subjects";
+import { buildMetadata } from "@/services/seo";
 import {
   getOptionalAuthenticatedStudent,
   getOptionalAuthenticatedTeacher,
 } from "@/services/session-guard";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildMetadata({
+  path: PUBLIC_ROUTES.home,
+  title: SITE_TITLE_DEFAULT,
+  description: SITE_DESCRIPTION,
+  indexable: true,
+});
 
 export default async function HomePage({
   searchParams,
@@ -59,36 +70,39 @@ export default async function HomePage({
   return (
     <>
       <AppHeader
+        centerSlot={<LandingNav />}
         rightSlot={
           <div className="flex items-center gap-2">
             {teacher ? (
               <Button size="sm" asChild>
-                <Link href="/teacher/dashboard">Teacher Dashboard</Link>
+                <TransitionLink href="/teacher/dashboard">
+                  Teacher Dashboard
+                </TransitionLink>
               </Button>
             ) : student ? (
               <Button size="sm" asChild>
-                <Link href="/student/dashboard">Student Dashboard</Link>
+                <TransitionLink href="/student/dashboard">
+                  Student Dashboard
+                </TransitionLink>
               </Button>
             ) : (
               <>
                 <Button variant="ghost" size="sm" className="px-2.5 sm:px-3.5" asChild>
-                  <Link href="/student/login">Student Sign In</Link>
+                  <TransitionLink href="/student/login">Student Sign In</TransitionLink>
                 </Button>
                 <Button size="sm" className="px-3 sm:px-3.5" asChild>
-                  <Link href="/teacher/login">Teacher Sign In</Link>
+                  <TransitionLink href="/teacher/login">Teacher Sign In</TransitionLink>
                 </Button>
               </>
             )}
           </div>
         }
       />
-      <main id="main-content" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-16">
-        <PortalHome
-          activeTeacherId={teacher?.id ?? null}
-          activeStudentId={student?.id ?? null}
-          invalidJoinCode={Boolean(joinCode && !subjectCodeSchema.safeParse(joinCode).success)}
-        />
-      </main>
+      <PortalHome
+        activeTeacherId={teacher?.id ?? null}
+        activeStudentId={student?.id ?? null}
+        invalidJoinCode={Boolean(joinCode && !subjectCodeSchema.safeParse(joinCode).success)}
+      />
     </>
   );
 }

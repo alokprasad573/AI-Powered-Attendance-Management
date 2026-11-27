@@ -105,6 +105,12 @@ export function BiometricHUD({
 
   useFrame((_, delta) => {
     if (reducedMotion) return;
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.motionPaused === "true"
+    ) {
+      return;
+    }
     const dt = Math.min(delta, 0.05);
     const speed = isLiveTracking ? 0.14 : 0.06;
 

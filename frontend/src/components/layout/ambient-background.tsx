@@ -6,7 +6,7 @@ export function AmbientBackground() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[var(--bg-primary)]"
     >
-      {/* Layer 0: Shader Caustics & Refracted Glass Light Beams (WebGL2 GLSL) */}
+      {/* Layer 0: Interactive Magnetic Vector Field */}
       <Canvas />
 
       {/* Subtle Optical Glass Micro-Grain */}

@@ -1,8 +1,15 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { AuthShell } from "@/components/auth/auth-shell";
 import { TeacherLoginForm } from "@/components/auth/teacher-login-form";
-import { AppHeader } from "@/components/layout/app-header";
-import { Button } from "@/components/ui/button";
+import { PUBLIC_ROUTES } from "@/constants/seo";
+import { buildMetadata } from "@/services/seo";
+
+export const metadata: Metadata = buildMetadata({
+  path: PUBLIC_ROUTES.teacherLogin,
+  title: "Teacher Login",
+  description:
+    "Sign in to the Haziri.AI Teacher Portal to create subjects, share QR join links, and capture multi-photo classroom attendance.",
+});
 
 export default async function TeacherLoginPage({
   searchParams,
@@ -18,25 +25,33 @@ export default async function TeacherLoginPage({
   const authError = Array.isArray(rawError) ? rawError[0] : rawError;
 
   return (
-    <>
-      <AppHeader
-        subtitle="Teacher Portal Authentication"
-        rightSlot={
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Back to Home
-            </Link>
-          </Button>
-        }
+    <AuthShell
+      headerSubtitle="Teacher Sign In"
+      roleBadge="Teacher Portal"
+      headline="Manage classes, rosters, and photo attendance in one place."
+      description="Sign in with your Teacher ID or email to open your classes, take roll from classroom photos, and download attendance reports."
+      alternateHref="/teacher/register"
+      alternateLabel="Create Teacher Account"
+      highlights={[
+        {
+          label: "Private Class Lists",
+          detail: "Only you can view and manage the subjects and rosters you create.",
+        },
+        {
+          label: "Duplicate-Safe Saves",
+          detail: "Retrying a save never creates duplicate classroom attendance records.",
+        },
+        {
+          label: "Clean Spreadsheet Export",
+          detail: "Download well-formatted attendance reports ready for your gradebook.",
+        },
+      ]}
+    >
+      <TeacherLoginForm
+        prefillTeacherId={prefillTeacherId ?? ""}
+        nextPath={nextPath ?? "/teacher/dashboard"}
+        initialAuthError={authError ?? null}
       />
-      <main id="main-content" className="mx-auto max-w-xl px-4 py-10 sm:px-6 lg:py-14">
-        <TeacherLoginForm
-          prefillTeacherId={prefillTeacherId ?? ""}
-          nextPath={nextPath ?? "/teacher/dashboard"}
-          initialAuthError={authError ?? null}
-        />
-      </main>
-    </>
+    </AuthShell>
   );
 }

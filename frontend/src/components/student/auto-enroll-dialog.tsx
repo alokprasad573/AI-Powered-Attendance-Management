@@ -111,7 +111,7 @@ export function AutoEnrollDialog({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Auto Enrolling</DialogTitle>
+          <DialogTitle>Join Class</DialogTitle>
           <DialogDescription>
             Shared class invitation for code{" "}
             <span className="telemetry-num text-[var(--accent-primary)]">{joinCode}</span>

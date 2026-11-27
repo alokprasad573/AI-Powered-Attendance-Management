@@ -1,4 +1,4 @@
-# Haziri.AI — AI-Powered Attendance & Identity Platform
+# Haziri.AI — AI-Powered Attendance Platform
 
 <p align="left">
   <img src="https://img.shields.io/badge/Next.js-16-090A0B?style=for-the-badge&logo=nextdotjs&logoColor=B9D0D8" alt="Next.js 16" />

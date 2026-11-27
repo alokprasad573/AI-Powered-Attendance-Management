@@ -51,18 +51,18 @@ export interface LiveMeshBridge {
 }
 
 export const INTERACTION_STATE_LABELS: Record<BiometricInteractionState, string> = {
-  standby: "Standby",
-  camera_initializing: "Camera Initializing",
+  standby: "Ready",
+  camera_initializing: "Starting Camera",
   camera_permission_required: "Camera Permission Required",
   camera_active: "Camera Active",
-  face_detected: "Face Detected",
-  analyzing_landmarks: "Analyzing Landmarks",
-  matching_identity: "Matching Identity",
-  recognition_successful: "Recognition Successful",
-  recognition_failed: "Recognition Failed",
-  no_face_detected: "No Face Detected",
-  multiple_faces_detected: "Multiple Faces Detected",
-  camera_error: "Camera Error",
+  face_detected: "Face Found",
+  analyzing_landmarks: "Aligning Face",
+  matching_identity: "Checking Identity",
+  recognition_successful: "Match Confirmed",
+  recognition_failed: "Could Not Match",
+  no_face_detected: "No Face Found",
+  multiple_faces_detected: "Multiple Faces Found",
+  camera_error: "Camera Unavailable",
 };
 
 export interface WorkflowStageDescriptor {
@@ -127,18 +127,18 @@ export function deriveWorkflowStages(
   }
 
   return [
-    { id: "face_detection", index: 1, label: "Face Detection", status: detection },
+    { id: "face_detection", index: 1, label: "Find Face", status: detection },
     {
       id: "landmark_analysis",
       index: 2,
-      label: "Facial Landmark Analysis",
+      label: "Center & Align",
       status: landmarks,
     },
-    { id: "identity_matching", index: 3, label: "Identity Matching", status: matching },
+    { id: "identity_matching", index: 3, label: "Verify Match", status: matching },
     {
       id: "recognition_complete",
       index: 4,
-      label: "Recognition Complete",
+      label: "All Set",
       status: complete,
     },
   ];

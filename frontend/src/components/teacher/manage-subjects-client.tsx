@@ -43,7 +43,7 @@ export function ManageSubjectsClient({
 
       {subjects.length === 0 ? (
         <Alert variant="info">
-          NO SUBJECTS FOUND. CREATE ONE ABOVE
+          No subjects yet. Create your first subject above to start inviting students.
         </Alert>
       ) : (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">

@@ -1,9 +1,16 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { AuthShell } from "@/components/auth/auth-shell";
 import { StudentLoginForm } from "@/components/auth/student-login-form";
-import { AppHeader } from "@/components/layout/app-header";
-import { Button } from "@/components/ui/button";
+import { PUBLIC_ROUTES } from "@/constants/seo";
 import { subjectCodeSchema } from "@/lib/validations/subjects";
+import { buildMetadata } from "@/services/seo";
+
+export const metadata: Metadata = buildMetadata({
+  path: PUBLIC_ROUTES.studentLogin,
+  title: "Student Login",
+  description:
+    "Sign in to your Haziri.AI student account with your password or a quick face check.",
+});
 
 export default async function StudentLoginPage({
   searchParams,
@@ -23,25 +30,33 @@ export default async function StudentLoginPage({
   const initialAuthError = Array.isArray(rawError) ? rawError[0] : rawError;
 
   return (
-    <>
-      <AppHeader
-        subtitle="Student Portal Authentication"
-        rightSlot={
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              Back to Home
-            </Link>
-          </Button>
-        }
+    <AuthShell
+      headerSubtitle="Student Sign In"
+      roleBadge="Student Portal"
+      headline="Sign in quickly. Check your attendance anywhere."
+      description="Use your Student ID or email with your password, or sign in hands-free with a quick face check and email link."
+      alternateHref="/student/register"
+      alternateLabel="Create Student Account"
+      highlights={[
+        {
+          label: "Private Check-In",
+          detail: "Face checks run directly on your device without saving or uploading photos.",
+        },
+        {
+          label: "Email Confirmation",
+          detail: "Face sign-in confirms through your registered email for added security.",
+        },
+        {
+          label: "Seamless Class Joining",
+          detail: "Any class QR link you scanned stays ready as soon as you sign in.",
+        },
+      ]}
+    >
+      <StudentLoginForm
+        prefillStudentId={prefillStudentId ?? ""}
+        joinCode={joinCode}
+        initialAuthError={initialAuthError ?? null}
       />
-      <main id="main-content" className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:py-14">
-        <StudentLoginForm
-          prefillStudentId={prefillStudentId ?? ""}
-          joinCode={joinCode}
-          initialAuthError={initialAuthError ?? null}
-        />
-      </main>
-    </>
+    </AuthShell>
   );
 }

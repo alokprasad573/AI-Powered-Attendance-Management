@@ -121,7 +121,7 @@ export function DeleteSubjectDialog({
 
           <Alert variant="warning">
             <p className="font-medium text-[var(--text-primary)]">
-              Permanent cascade removal
+              All records for this subject will be removed
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[var(--text-secondary)]">
               Deleting this subject will also permanently remove{" "}
