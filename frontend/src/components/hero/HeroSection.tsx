@@ -85,7 +85,7 @@ export function HeroSection({
       <div className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
         <div className="max-w-3xl space-y-5">
           <div className="hero-stagger flex flex-wrap items-center gap-2.5">
-            <Badge variant="neural">Private Classroom Attendance</Badge>
+            <Badge variant="neural">Periodic Classroom Attendance</Badge>
             <span className="telemetry-num text-[11px] uppercase tracking-[0.16em] text-[var(--text-secondary)]">
               Fast · On-Device · No Photos Saved
             </span>

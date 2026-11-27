@@ -326,14 +326,18 @@ export function PortalHome({
                 className="specular-rule pointer-events-none absolute inset-x-14 top-0 h-px"
               />
               <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-                <div className="max-w-2xl space-y-2.5">
-                  <p className="telemetry-num text-xs uppercase tracking-[0.18em] text-[var(--accent-highlight)]">
-                    Ready to Begin
-                  </p>
-                  <h2 className="font-display text-2xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-3xl">
-                    Start taking private classroom attendance today.
-                  </h2>
-                  <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
+                <div className="mb-10 flex flex-col gap-4 border-b border-[var(--border-hairline)] pb-8 lg:flex-row lg:items-end lg:justify-between">
+                  <div className="space-y-3">
+                    <Badge variant="neural">Ready to Begin</Badge>
+                    <KineticHeadline
+                      as="h2"
+                      scrollTrigger
+                      className="font-display text-3xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-4xl"
+                    >
+                      Start taking periodic classroom attendance today.
+                    </KineticHeadline>
+                  </div>
+                  <p className="max-w-md text-sm leading-relaxed text-[var(--text-secondary)]">
                     Create a teacher account to share class QR codes, or join as a
                     student to set up your profile in under a minute.
                   </p>
